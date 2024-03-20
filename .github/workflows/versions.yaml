@@ -88,17 +88,18 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branchName }}
 
-      - uses: actions-ecosystem/action-release-label@v1
-        id: release-label
+      # - uses: actions-ecosystem/action-release-label@v1
+      #   id: release-label
 
       - uses: actions-ecosystem/action-get-latest-tag@v1
         id: get-latest-tag
-        if: ${{ steps.release-label.outputs.level != null }}
-
+        # if: ${{ steps.release-label.outputs.level != null }}
+      - name: echo latest tag
+        run: echo " ${{ steps.get-latest-tag.outputs.tag}}"
 
       - uses: actions-ecosystem/action-bump-semver@v1
         id: bump-semver
-        if: ${{ steps.release-label.outputs.level != null }}
+        # if: ${{ steps.release-label.outputs.level != null }}
         with:
           current_version: ${{ steps.get-latest-tag.outputs.tag }}
           level: "patch"
