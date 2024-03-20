@@ -88,6 +88,9 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branchName }}
 
+      - name: cd 
+        run: cd services/try2/try2
+
       # - uses: actions-ecosystem/action-release-label@v1
       #   id: release-label
 
@@ -106,6 +109,9 @@ jobs:
    
       - name: echo new version
         run: echo " ${{ steps.bump-semver.outputs.new_version }}"
+
+      - name: cd ..
+        run: cd ../../..
 
       - name: 🔑 Log in to registry
         uses: docker/login-action@v3
