@@ -88,30 +88,38 @@ jobs:
         with:
           ref: ${{ github.event.inputs.branchName }}
 
-      - name: cd 
-        run: cd services/try2/try2
+      # - name: cd 
+      #   run: cd services/try2/try2
 
-      # - uses: actions-ecosystem/action-release-label@v1
-      #   id: release-label
+      # # - uses: actions-ecosystem/action-release-label@v1
+      # #   id: release-label
 
-      - uses: actions-ecosystem/action-get-latest-tag@v1
-        id: get-latest-tag
-        # if: ${{ steps.release-label.outputs.level != null }}
-      - name: echo latest tag
-        run: echo " ${{ steps.get-latest-tag.outputs.tag}}"
+      # - uses: actions-ecosystem/action-get-latest-tag@v1
+      #   id: get-latest-tag
+      #   # if: ${{ steps.release-label.outputs.level != null }}
+      # - name: echo latest tag
+      #   run: echo " ${{ steps.get-latest-tag.outputs.tag}}"
 
-      - uses: actions-ecosystem/action-bump-semver@v1
-        id: bump-semver
-        # if: ${{ steps.release-label.outputs.level != null }}
-        with:
-          current_version: ${{ steps.get-latest-tag.outputs.tag }}
-          level: "patch"
+      # - uses: actions-ecosystem/action-bump-semver@v1
+      #   id: bump-semver
+      #   # if: ${{ steps.release-label.outputs.level != null }}
+      #   with:
+      #     current_version: ${{ steps.get-latest-tag.outputs.tag }}
+      #     level: "patch"
    
-      - name: echo new version
-        run: echo " ${{ steps.bump-semver.outputs.new_version }}"
+      # - name: echo new version
+      #   run: echo " ${{ steps.bump-semver.outputs.new_version }}"
 
-      - name: cd ..
-        run: cd ../../..
+      # - name: cd ..
+      #   run: cd ../../..
+
+      # - name: Check package version
+      #   uses: technote-space/package-version-check-action@v1
+      #   with:
+      #     GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      #     BRANCH_PREFIX: release/
+
+       
 
       - name: 🔑 Log in to registry
         uses: docker/login-action@v3
@@ -119,6 +127,13 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: get latest image 
+        uses: shrink/actions-docker-latest-image@v1
+        with:
+          repository: 'ghcr.io/malkakozlik/manage-version/try2'
+
+      
 
       # - name: 🔑 Login to Azure
       #   uses: azure/login@v1
@@ -131,30 +146,30 @@ jobs:
       #     for file in "${REQUIRED_FILES[@]}"; do
       #       cp "./${{ env.WORKING_DIR }}/${file}" "${{ matrix.directory }}/"
       #     done
-      - name: 🔄 Extract Last Directory Level
-        id: get-last-level
-        run: |
-          LAST_LEVEL=$(echo ${{ matrix.directory }} | xargs -n 1 basename)
-          echo "LAST_LEVEL=$LAST_LEVEL" >> "$GITHUB_ENV"
-      - name: 🐳 Docker metadata
-        id: docker_meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
-          tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=semver,pattern=v{{major}}.{{minor}}.{{patch}},value=${{ steps.bump-semver.outputs.new_version }}
-            type=semver,pattern=v{{major}}.{{minor}},value=${{ steps.bump-semver.outputs.new_version }}
-            type=semver,pattern=v{{major}},value=${{ steps.bump-semver.outputs.new_version }}
-      - name: 🏗️ Build and push container image to registry
-        id: build-and-push
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ matrix.directory }}
-          push: true
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
-          file: ./${{ matrix.directory }}/Dockerfile
+      # - name: 🔄 Extract Last Directory Level
+      #   id: get-last-level
+      #   run: |
+      #     LAST_LEVEL=$(echo ${{ matrix.directory }} | xargs -n 1 basename)
+      #     echo "LAST_LEVEL=$LAST_LEVEL" >> "$GITHUB_ENV"
+      # - name: 🐳 Docker metadata
+      #   id: docker_meta
+      #   uses: docker/metadata-action@v5
+      #   with:
+      #     images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
+      #     tags: |
+      #       type=raw,value=latest,enable={{is_default_branch}}
+      #       type=semver,pattern=v{{major}}.{{minor}}.{{patch}},value=${{ steps.bump-semver.outputs.new_version }}
+      #       type=semver,pattern=v{{major}}.{{minor}},value=${{ steps.bump-semver.outputs.new_version }}
+      #       type=semver,pattern=v{{major}},value=${{ steps.bump-semver.outputs.new_version }}
+      # - name: 🏗️ Build and push container image to registry
+      #   id: build-and-push
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: ./${{ matrix.directory }}
+      #     push: true
+      #     tags: ${{ steps.docker_meta.outputs.tags }}
+      #     labels: ${{ steps.docker_meta.outputs.labels }}
+      #     file: ./${{ matrix.directory }}/Dockerfile
 
   #     - name: 🚀 Deploy to Azure Functions
   #       id: deploy-to-functions
