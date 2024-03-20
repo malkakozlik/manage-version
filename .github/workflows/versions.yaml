@@ -297,6 +297,25 @@ jobs:
       #       cp "./${{ env.WORKING_DIR }}/${file}" "${{ matrix.directory }}/"
       #     done
 
+      - name: Determine latest version
+        id: latest_php_version
+        uses: flownative/action-docker-get-label@v1
+        with:
+          image: "ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}"
+          label: org.label-schema.version
+          registry_username: ${{ github.actor }}
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
+          registry_endpoint: https://ghcr.io
+
+      # - name: Build Docker image
+      #   uses: flownative/action-docker-build@v1
+      #   env:
+      #     PHP_VERSION: ${{ steps.latest_php_version.outputs.value }}
+      #   with:
+# …        
+      - name:  echo tag
+        run: echo "${{ steps.latest_php_version.outputs.value }}"
+
       - name: env tag
         run: echo "TAG=v0.0.1" >> "$GITHUB_ENV"
 
@@ -319,7 +338,6 @@ jobs:
       - name: echo tags and labels
         run: |
           echo "${{ steps.docker_meta.outputs.tags }}"
-          echo "${{ steps.docker_meta.outputs.labels }}"
       # - name: 🏗️ Build and push container image to registry
       #   id: build-and-push
       #   uses: docker/build-push-action@v5
