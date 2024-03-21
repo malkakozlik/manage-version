@@ -306,13 +306,7 @@ jobs:
           registry_username: ${{ github.actor }}
           registry_password: ${{ secrets.GITHUB_TOKEN }}
           registry_endpoint: https://ghcr.io
-
-      # - name: Build Docker image
-      #   uses: flownative/action-docker-build@v1
-      #   env:
-      #     PHP_VERSION: ${{ steps.latest_php_version.outputs.value }}
-      #   with:
-# …        
+    
       - name:  echo tag
         run: echo "${{ steps.latest_php_version.outputs.value }}"
 
@@ -337,7 +331,7 @@ jobs:
 
       - name: echo tags and labels
         run: |
-          echo "${{ steps.docker_meta.outputs.tags }}"
+          echo "${{ steps.docker_meta.outputs.labels }}"
       # - name: 🏗️ Build and push container image to registry
       #   id: build-and-push
       #   uses: docker/build-push-action@v5
