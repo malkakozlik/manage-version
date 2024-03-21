@@ -319,6 +319,12 @@ jobs:
       # - name: print env
       #   run: echo $DOCKER_METADATA_OUTPUT_VERSION
 
+      - name: 🔄 Extract Last Directory Level
+        id: get-last-level
+        run: |
+          LAST_LEVEL=$(echo ${{ matrix.directory }} | xargs -n 1 basename)
+          echo "LAST_LEVEL=$LAST_LEVEL" >> "$GITHUB_ENV"
+
       - name: echo 
         run: echo "ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}"
 
@@ -328,6 +334,12 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
 
+      - name: print labels
+        run: echo "${{ steps.meta.outputs.json }}"
+
+      - name: print env
+        run: echo $DOCKER_METADATA_OUTPUT_VERSION
+
       # - name: insert to env
       #   run: echo "LABELS=${{ steps.meta.outputs.labels }}" >> "$GITHUB_ENV"
 
@@ -336,11 +348,7 @@ jobs:
       # - name: env tag
       #   run: echo "TAG=v0.0.1" >> "$GITHUB_ENV"
 
-      # - name: 🔄 Extract Last Directory Level
-      #   id: get-last-level
-      #   run: |
-      #     LAST_LEVEL=$(echo ${{ matrix.directory }} | xargs -n 1 basename)
-      #     echo "LAST_LEVEL=$LAST_LEVEL" >> "$GITHUB_ENV"
+   
       # - name: 🐳 Docker metadata
       #   id: docker_meta
       #   uses: docker/metadata-action@v5
