@@ -332,7 +332,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
+          images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
 
       - name: print labels
         run: echo "${{ steps.meta.outputs.labels }}"
