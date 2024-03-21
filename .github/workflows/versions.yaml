@@ -314,7 +314,7 @@ jobs:
       #     images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
 
       - name: print labels
-        run: echo "${{ steps.latest_php_version.outputs.labels }}"
+        run: echo "${{ steps.latest_php_version.outputs.value }}"
 
       # - name: print env
       #   run: echo $DOCKER_METADATA_OUTPUT_VERSION
