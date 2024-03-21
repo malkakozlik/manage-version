@@ -307,14 +307,14 @@ jobs:
       #     registry_password: ${{ secrets.GITHUB_TOKEN }}
       #     registry_endpoint: https://ghcr.io
 
-      - name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
+      # - name: Docker meta
+      #   id: meta
+      #   uses: docker/metadata-action@v5
+      #   with:
+      #     images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
 
-      - name: print labels
-        run: echo "${{ steps.meta.outputs.labels }}"
+      # - name: print labels
+      #   run: echo "${{ steps.meta.outputs.labels }}"
 
       # - name: print env
       #   run: echo $DOCKER_METADATA_OUTPUT_VERSION
@@ -328,14 +328,14 @@ jobs:
       # - name: echo 
       #   run: echo "ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}"
 
-      # - name: Extract metadata (tags, labels) for Docker
-      #   id: meta
-      #   uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-      #   with:
-      #     images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
 
-      # - name: print labels
-      #   run: echo "${{ steps.meta.outputs.labels }}"
+      - name: print labels
+        run: echo "${{ steps.meta.outputs.labels }}"
 
       # - name: print env
         # run: echo $DOCKER_METADATA_OUTPUT_VERSION
