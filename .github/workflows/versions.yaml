@@ -297,41 +297,51 @@ jobs:
       #       cp "./${{ env.WORKING_DIR }}/${file}" "${{ matrix.directory }}/"
       #     done
 
-      - name: Determine latest version
-        id: latest_php_version
-        uses: flownative/action-docker-get-label@v1
-        with:
-          image: ghcr.io/malkakozlik/manage-version/try2:v0.0.1
-          label: org.opencontainers.image.version
-          registry_username: ${{ github.actor }}
-          registry_password: ${{ secrets.GITHUB_TOKEN }}
-          registry_endpoint: https://ghcr.io
-    
-      - name:  echo tag
-        run: echo "${{ steps.latest_php_version.outputs.value }}"
+      # - name: Determine latest version
+      #   id: latest_php_version
+      #   uses: flownative/action-docker-get-label@v1
+      #   with:
+      #     image: ghcr.io/malkakozlik/manage-version/try2:v0.0.1
+      #     label: org.opencontainers.image.version
+      #     registry_username: ${{ github.actor }}
+      #     registry_password: ${{ secrets.GITHUB_TOKEN }}
+      #     registry_endpoint: https://ghcr.io
 
-      - name: env tag
-        run: echo "TAG=v0.0.1" >> "$GITHUB_ENV"
-
-      - name: 🔄 Extract Last Directory Level
-        id: get-last-level
-        run: |
-          LAST_LEVEL=$(echo ${{ matrix.directory }} | xargs -n 1 basename)
-          echo "LAST_LEVEL=$LAST_LEVEL" >> "$GITHUB_ENV"
-      - name: 🐳 Docker metadata
-        id: docker_meta
+      - name: Docker meta
+        id: meta
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
-          tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=semver,pattern=v{{major}}.{{minor}}.{{patch}},value=${{ env.TAG }}
-            type=semver,pattern=v{{major}}.{{minor}},value=${{ env.TAG }}
-            type=semver,pattern=v{{major}},value=${{ env.TAG }}
 
-      - name: echo tags and labels
-        run: |
-          echo "${{ steps.docker_meta.outputs.labels }}"
+    
+      - name:  echo tag
+        run: echo "${{ steps.meta.outputs.labels }}"
+
+      # - name: env tag
+      #   run: echo "TAG=v0.0.1" >> "$GITHUB_ENV"
+
+      # - name: 🔄 Extract Last Directory Level
+      #   id: get-last-level
+      #   run: |
+      #     LAST_LEVEL=$(echo ${{ matrix.directory }} | xargs -n 1 basename)
+      #     echo "LAST_LEVEL=$LAST_LEVEL" >> "$GITHUB_ENV"
+      # - name: 🐳 Docker metadata
+      #   id: docker_meta
+      #   uses: docker/metadata-action@v5
+      #   with:
+      #     images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
+      #     tags: |
+      #       type=raw,value=latest,enable={{is_default_branch}}
+      #       type=semver,pattern=v{{major}}.{{minor}}.{{patch}},value=${{ env.TAG }}
+      #       type=semver,pattern=v{{major}}.{{minor}},value=${{ env.TAG }}
+      #       type=semver,pattern=v{{major}},value=${{ env.TAG }}
+
+      # - name: echo tags and labels
+      #   run: |
+      #     echo "${{ steps.docker_meta.outputs.labels }}"
+
+
+      # -------------------------------------------------------------------------------------------------------------------------
       # - name: 🏗️ Build and push container image to registry
       #   id: build-and-push
       #   uses: docker/build-push-action@v5
