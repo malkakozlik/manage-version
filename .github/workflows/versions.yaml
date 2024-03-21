@@ -301,7 +301,7 @@ jobs:
         id: latest_php_version
         uses: flownative/action-docker-get-label@v1
         with:
-          image: ghcr.io/malkakozlik/manage-version/try2:v0.0.1
+          image: ghcr.io/malkakozlik/manage-version/try2:latest
           label: org.opencontainers.image.version
           registry_username: ${{ github.actor }}
           registry_password: ${{ secrets.GITHUB_TOKEN }}
