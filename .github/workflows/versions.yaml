@@ -317,7 +317,7 @@ jobs:
         run: echo "LABELS=${{ steps.meta.outputs.labels }}" >> "$GITHUB_ENV"
 
       - name:  echo tag
-        run: echo $LABELS
+        run: echo $DOCKER_METADATA_OUTPUT_LABELS
       # - name: env tag
       #   run: echo "TAG=v0.0.1" >> "$GITHUB_ENV"
 
