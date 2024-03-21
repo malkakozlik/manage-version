@@ -335,10 +335,10 @@ jobs:
           images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
 
       - name: print labels
-        run: echo "${{ steps.meta.outputs.json }}"
+        run: echo "${{ steps.meta.outputs.labels }}"
 
-      - name: print env
-        run: echo $DOCKER_METADATA_OUTPUT_VERSION
+      # - name: print env
+        # run: echo $DOCKER_METADATA_OUTPUT_VERSION
 
       # - name: insert to env
       #   run: echo "LABELS=${{ steps.meta.outputs.labels }}" >> "$GITHUB_ENV"
