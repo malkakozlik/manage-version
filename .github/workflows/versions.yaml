@@ -313,10 +313,11 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
 
-    
-      - name:  echo tag
-        run: echo "${{ steps.meta.outputs.labels["org.opencontainers.image.version"] }}"
+      - name: insert to env
+        run: echo "LABELS=${{ steps.meta.outputs.labels }}" >> "$GITHUB_ENV"
 
+      - name:  echo tag
+        run: echo $LABELS
       # - name: env tag
       #   run: echo "TAG=v0.0.1" >> "$GITHUB_ENV"
 
