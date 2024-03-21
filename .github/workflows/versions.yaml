@@ -297,15 +297,15 @@ jobs:
       #       cp "./${{ env.WORKING_DIR }}/${file}" "${{ matrix.directory }}/"
       #     done
 
-      # - name: Determine latest version
-      #   id: latest_php_version
-      #   uses: flownative/action-docker-get-label@v1
-      #   with:
-      #     image: ghcr.io/malkakozlik/manage-version/try2:latest
-      #     label: org.opencontainers.image.version
-      #     registry_username: ${{ github.actor }}
-      #     registry_password: ${{ secrets.GITHUB_TOKEN }}
-      #     registry_endpoint: https://ghcr.io
+      - name: Determine latest version
+        id: latest_php_version
+        uses: flownative/action-docker-get-label@v1
+        with:
+          image: ghcr.io/malkakozlik/manage-version/try2:latest
+          label: org.opencontainers.image.version
+          registry_username: ${{ github.actor }}
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
+          registry_endpoint: https://ghcr.io
 
       # - name: Docker meta
       #   id: meta
@@ -313,8 +313,8 @@ jobs:
       #   with:
       #     images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
 
-      # - name: print labels
-      #   run: echo "${{ steps.meta.outputs.labels }}"
+      - name: print labels
+        run: echo "${{ steps.latest_php_version.outputs.value }}"
 
       # - name: print env
       #   run: echo $DOCKER_METADATA_OUTPUT_VERSION
@@ -328,14 +328,14 @@ jobs:
       # - name: echo 
       #   run: echo "ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}"
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-        with:
-          images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
+      # - name: Extract metadata (tags, labels) for Docker
+      #   id: meta
+      #   uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+      #   with:
+      #     images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
 
-      - name: print labels
-        run: echo "${{ steps.meta.outputs.labels }}"
+      # - name: print labels
+      #   run: echo "${{ steps.meta.outputs.labels }}"
 
       # - name: print env
         # run: echo $DOCKER_METADATA_OUTPUT_VERSION
