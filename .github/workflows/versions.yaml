@@ -314,13 +314,13 @@ jobs:
           images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
 
       - name: print labels
-        run: echo "${{ steps.meta.outputs.labels }}"
+        run: echo "${{ steps.meta.outputs.version }}"
 
-      - name: insert to env
-        run: echo "LABELS=${{ steps.meta.outputs.labels }}" >> "$GITHUB_ENV"
+      # - name: insert to env
+      #   run: echo "LABELS=${{ steps.meta.outputs.labels }}" >> "$GITHUB_ENV"
 
-      - name:  echo tag
-        run: echo $DOCKER_METADATA_OUTPUT_LABELS
+      # - name:  echo tag
+      #   run: echo $DOCKER_METADATA_OUTPUT_LABELS
       # - name: env tag
       #   run: echo "TAG=v0.0.1" >> "$GITHUB_ENV"
 
