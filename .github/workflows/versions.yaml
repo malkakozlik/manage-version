@@ -313,6 +313,9 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
 
+      - name: print labels
+        run: echo "${{ steps.meta.outputs.labels }}"
+
       - name: insert to env
         run: echo "LABELS=${{ steps.meta.outputs.labels }}" >> "$GITHUB_ENV"
 
