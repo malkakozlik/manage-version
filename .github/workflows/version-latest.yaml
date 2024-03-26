@@ -1,4 +1,4 @@
-name: Add version
+name: Add version latest
 
 on:
   workflow_dispatch:
@@ -12,19 +12,27 @@ on:
         options:
           - only_changed_directories
           - all
+      semverLevel:
+        type: choice
+        default: patch
+        options:
+          - major
+          - minor
+          - patch
 
 env:
   WORKING_DIR: services
+
+permissions:
+  contents: read
+  packages: write
+  actions: read
 
 jobs:
   setup:
     runs-on: "ubuntu-latest"
     outputs:
       MATRIX: ${{ env.DIRS }}
-    permissions:
-      contents: read
-      packages: write
-      actions: read
 
     steps:
       - name: 📂 Checkout repository
@@ -44,7 +52,7 @@ jobs:
         with:  
           token: "${{ secrets.GITHUB_TOKEN }}"
           branch: "main"
-          workflow: "Add version"
+          workflow: "${{ github.workflow }}"
         if: inputs.deploy == 'only_changed_directories'
 
       - name: Get changed directories
@@ -69,9 +77,6 @@ jobs:
 
   build-and-deploy:
     runs-on: "ubuntu-latest"
-    permissions:
-      contents: read
-      packages: write
     needs: setup
     strategy:
       matrix:
@@ -120,13 +125,13 @@ jobs:
           registry_username: ${{ github.actor }}
           registry_password: ${{ secrets.GITHUB_TOKEN }}
           registry_endpoint: https://ghcr.io
-
+      
       - name: ➕ Increase Version
         uses: actions-ecosystem/action-bump-semver@v1
         id: bump-semver
         with:
           current_version: ${{ steps.latest_version.outputs.value }}
-          level: "patch"
+          level: ${{ inputs.semverLevel }}
         if: steps.latest_version.outputs.value != 'null'
 
       - name: 🔖 New Package Version
@@ -160,3 +165,4 @@ jobs:
         with:
           app-name: ${{ env.LAST_LEVEL }}
           image: "ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:${{ env.TAG }}"
+          
