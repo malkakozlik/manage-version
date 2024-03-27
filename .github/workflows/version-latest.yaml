@@ -137,8 +137,8 @@ jobs:
       #       type=semver,pattern={{major}}.{{minor}}.{{patch}}
       - name: run
         run: |
-          docker pull ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
-              
+          # docker pull ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
+          docker image inspect --format '{{.RepoDigests}}' ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
       
       # - name: ➕ Increase Version
       #   uses: actions-ecosystem/action-bump-semver@v1
