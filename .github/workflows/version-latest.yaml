@@ -145,6 +145,9 @@ jobs:
             echo "$version"
           } || {}
 
+      - name: echo 
+        run: echo ${{ env.LATEST_VERSION }}
+
       
       - name: name
         if: ${{ env.LATEST_VERSION }} != "null"
