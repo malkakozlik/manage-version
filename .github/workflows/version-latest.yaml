@@ -131,7 +131,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
-          labels: org.opencontainers.image.version = "latest"
+          labels: org.opencontainers.image.version=latest
           
               
       
