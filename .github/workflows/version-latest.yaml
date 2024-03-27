@@ -137,7 +137,7 @@ jobs:
       #       type=semver,pattern={{major}}.{{minor}}.{{patch}}
       - name: run
         run: |
-          # docker pull ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
+          docker pull ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
           # docker image inspect --format '{{json .Tag}}' ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
           # result=$(docker image inspect ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest | jq -r '.[].RepoDigests[]' | awk -F@ '{print $2}')
           # echo "$result"
