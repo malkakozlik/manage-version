@@ -139,7 +139,7 @@ jobs:
         run: |
           docker pull ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
           # docker image inspect --format '{{json .Tag}}' ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
-          docker image inspect ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest | jq -r '.[].RepoDigests[]' | awk -F@ '{print $2}'}}
+          docker image inspect ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest | jq -r '.[].RepoDigests[]' | awk -F@ '{print $2}'
           dir = "hello"
           echo $dir
       # - name: ➕ Increase Version
