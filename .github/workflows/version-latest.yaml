@@ -146,14 +146,14 @@ jobs:
 
       
       - name: name
-        run: echo "${{ env.LATEST_VERSION }}"
+        run: echo ${{ env.LATEST_VERSION }}
 
           
           
       - name: ➕ Increase Version
         uses: actions-ecosystem/action-bump-semver@v1
         id: bump-semver
-        if: ${{ env.LATEST_VERSION }} != ''
+        if: ${{ env.LATEST_VERSION }} != null
         with:
           current_version: ${{ env.LATEST_VERSION }}
           level: ${{ inputs.semverLevel }}
