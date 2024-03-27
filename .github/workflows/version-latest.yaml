@@ -145,41 +145,24 @@ jobs:
             echo "$version"
           } || {}
 
-      - name: echo 
-        run: echo "${{ env.LATEST_VERSION != 'null' }}"
-
-      
-      - name: name
+      - name: ➕ Increase Version
+        uses: actions-ecosystem/action-bump-semver@v1
+        id: bump-semver
+        with:
+          current_version: ${{ env.LATEST_VERSION }}
+          level: ${{ inputs.semverLevel }}
         if: ${{ env.LATEST_VERSION != 'null' }}
-        run: echo "true"
 
-          
-          
-      # - name: ➕ Increase Version
-      #   uses: actions-ecosystem/action-bump-semver@v1
-      #   id: bump-semver
-      #   with:
-      #     current_version: ${{ env.LATEST_VERSION }}
-      #     level: ${{ inputs.semverLevel }}
-      #   if: ${{ env.LATEST_VERSION }} != 'null'
+ 
 
-      # - name: name
-      #   run: echo "${{ steps.bump-semver.outputs.new_version }}"
+ 
 
-      # - name: ➕ Increase Version
-      #   uses: actions-ecosystem/action-bump-semver@v1
-      #   id: bump-semver
-      #   with:
-      #     current_version: ${{ fromJSON(steps.docker_metadata.outputs.json).labels['org.opencontainers.image.version'] }}
-      #     level: ${{ inputs.semverLevel }}
-      #   if: ${{ fromJSON(steps.docker_metadata.outputs.json).labels['org.opencontainers.image.version'] }} != 'null'
+      - name: 🔖 New Package Version
+        run: echo "TAG=${{ steps.bump-semver.outputs.new_version }}" >> "$GITHUB_ENV"
+        if: steps.latest_version.outputs.value != 'null'
 
-      # - name: 🔖 New Package Version
-      #   run: echo "TAG=${{ steps.bump-semver.outputs.new_version }}" >> "$GITHUB_ENV"
-      #   if: steps.latest_version.outputs.value != 'null'
-
-      # - name: echo 
-      #   run: echo "${{ steps.bump-semver.outputs.new_version }}"
+      - name: echo 
+        run: echo "${{ steps.bump-semver.outputs.new_version }}"
       
       # - name: 🐳 Docker metadata
       #   id: docker_meta
