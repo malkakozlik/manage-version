@@ -126,16 +126,18 @@ jobs:
       #     registry_password: ${{ secrets.GITHUB_TOKEN }}
       #     registry_endpoint: https://ghcr.io
 
-      - name: 🐳 Docker metadata
-        id: docker_metadata
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
-          labels: org.opencontainers.image.version=latest
-          tags: |
-            type=raw,value=latest,enable={{is_default_branch}}
-            type=semver,pattern={{major}}.{{minor}}.{{patch}}
-          
+      # - name: 🐳 Docker metadata
+      #   id: docker_metadata
+      #   uses: docker/metadata-action@v5
+      #   with:
+      #     images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
+      #     labels: org.opencontainers.image.version=latest
+      #     tags: |
+      #       type=raw,value=latest,enable={{is_default_branch}}
+      #       type=semver,pattern={{major}}.{{minor}}.{{patch}}
+      - name: run
+        run: |
+          docker pull ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
               
       
       # - name: ➕ Increase Version
@@ -146,20 +148,20 @@ jobs:
       #     level: ${{ inputs.semverLevel }}
       #   if: steps.latest_version.outputs.value != 'null'
 
-      - name: ➕ Increase Version
-        uses: actions-ecosystem/action-bump-semver@v1
-        id: bump-semver
-        with:
-          current_version: ${{ fromJSON(steps.docker_metadata.outputs.json).labels['org.opencontainers.image.version'] }}
-          level: ${{ inputs.semverLevel }}
-        if: ${{ fromJSON(steps.docker_metadata.outputs.json).labels['org.opencontainers.image.version'] }} != 'null'
+      # - name: ➕ Increase Version
+      #   uses: actions-ecosystem/action-bump-semver@v1
+      #   id: bump-semver
+      #   with:
+      #     current_version: ${{ fromJSON(steps.docker_metadata.outputs.json).labels['org.opencontainers.image.version'] }}
+      #     level: ${{ inputs.semverLevel }}
+      #   if: ${{ fromJSON(steps.docker_metadata.outputs.json).labels['org.opencontainers.image.version'] }} != 'null'
 
       # - name: 🔖 New Package Version
       #   run: echo "TAG=${{ steps.bump-semver.outputs.new_version }}" >> "$GITHUB_ENV"
       #   if: steps.latest_version.outputs.value != 'null'
 
-      - name: echo 
-        run: echo "${{ steps.bump-semver.outputs.new_version }}"
+      # - name: echo 
+      #   run: echo "${{ steps.bump-semver.outputs.new_version }}"
       
       # - name: 🐳 Docker metadata
       #   id: docker_meta
