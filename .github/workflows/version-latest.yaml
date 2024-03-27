@@ -148,7 +148,8 @@ jobs:
 
       
       - name: name
-        run: echo ${{ env.LATEST_VERSION }} != 'null'
+        run: true
+        if: ${{ env.LATEST_VERSION }} != null
 
           
           
