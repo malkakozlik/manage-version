@@ -142,9 +142,7 @@ jobs:
             docker pull ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
             version=$(docker inspect ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest | jq -r '.[0].Config.Labels["org.opencontainers.image.version"]')
             echo "LATEST_VERSION=$version" >> "$GITHUB_ENV" 
-          } || {
-            echo "LATEST_VERSION=v0.0.1" >> "$GITHUB_ENV"
-          }
+          } || {}
 
       
       - name: name
@@ -152,16 +150,16 @@ jobs:
 
           
           
-      # - name: ➕ Increase Version
-      #   uses: actions-ecosystem/action-bump-semver@v1
-      #   id: bump-semver
-      #   with:
-      #     current_version: ${{ env.LATEST_VERSION }}
-      #     level: ${{ inputs.semverLevel }}
-      #   if: ${{ env.LATEST_VERSION }} != 'null'
+      - name: ➕ Increase Version
+        uses: actions-ecosystem/action-bump-semver@v1
+        id: bump-semver
+        with:
+          current_version: ${{ env.LATEST_VERSION }}
+          level: ${{ inputs.semverLevel }}
+        if: ${{ env.LATEST_VERSION }} != null
 
-      # - name: name
-      #   run: echo "${{ steps.bump-semver.outputs.new_version }}"
+      - name: name
+        run: echo "${{ steps.bump-semver.outputs.new_version }}"
 
       # - name: ➕ Increase Version
       #   uses: actions-ecosystem/action-bump-semver@v1
