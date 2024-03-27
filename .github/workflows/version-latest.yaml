@@ -141,7 +141,7 @@ jobs:
           # docker image inspect --format '{{json .Tag}}' ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
           result=$(docker image inspect ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest | jq -r '.[].RepoDigests[]' | awk -F@ '{print $2}')
           echo "$result"
-          curl -s 'https://ghcr.io/v2/repositories/${{ github.repository }}/${{ env.LAST_LEVEL }}/tags' -H 'Content-Type: application/json' | jq -r '.results[] | select(.digest == "'$result'") | .name'
+          curl -s 'https://ghcr.io/v2/repositories/${{ github.repository }}/${{ env.LAST_LEVEL }}/tags' -H 'Content-Type: application/json' 
           
       # - name: ➕ Increase Version
       #   uses: actions-ecosystem/action-bump-semver@v1
