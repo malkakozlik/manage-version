@@ -132,6 +132,8 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
           labels: org.opencontainers.image.version=latest
+          tags: |
+            enable=false
           
               
       
