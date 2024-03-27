@@ -134,6 +134,7 @@ jobs:
           labels: org.opencontainers.image.version=latest
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
+            type=semver,pattern={{major}}.{{minor}}.{{patch}}
           
               
       
