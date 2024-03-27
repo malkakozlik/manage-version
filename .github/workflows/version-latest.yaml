@@ -142,13 +142,13 @@ jobs:
             docker pull ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
             version=$(docker inspect ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest | jq -r '.[0].Config.Labels["org.opencontainers.image.version"]')
             echo "LATEST_VERSION=$version" >> "$GITHUB_ENV" 
-            echo "hello"
+            echo "$version"
           } || {}
 
       
       - name: name
-        run: echo "true"
         if: ${{ env.LATEST_VERSION }} != "null"
+        run: echo "true"
 
           
           
