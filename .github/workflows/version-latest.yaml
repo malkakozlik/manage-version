@@ -141,7 +141,7 @@ jobs:
           # docker image inspect --format '{{json .Tag}}' ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
           docker image inspect ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest | jq -r '.[].RepoDigests[]' | awk -F@ '{print $2}'
           echo "hello"
-          direction="$1"
+          direction=$(!!)
           echo $direction
       # - name: ➕ Increase Version
       #   uses: actions-ecosystem/action-bump-semver@v1
