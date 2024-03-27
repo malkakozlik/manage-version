@@ -146,11 +146,11 @@ jobs:
           } || {}
 
       - name: echo 
-        run: echo "${{ env.LATEST_VERSION == null }}"
+        run: echo "${{ env.LATEST_VERSION != 'null' }}"
 
       
       - name: name
-        if: ${{ env.LATEST_VERSION == null }}
+        if: ${{ env.LATEST_VERSION != 'null' }}
         run: echo "true"
 
           
