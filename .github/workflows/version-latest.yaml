@@ -145,7 +145,7 @@ jobs:
           result2=$(curl -s 'https://ghcr.io/repositories/${{ github.repository }}/${{ env.LAST_LEVEL }}/tags' -H 'Content-Type: application/json' )
           echo "$result2"
           docker images
-          docker inspect $result
+          docker inspect ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
           
       # - name: ➕ Increase Version
       #   uses: actions-ecosystem/action-bump-semver@v1
