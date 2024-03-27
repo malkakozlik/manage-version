@@ -138,8 +138,7 @@ jobs:
       - name: 🏷️ Get latest version
         id: latest_version
         run: |
-          export GHCR_TOKEN=$(echo $GITHUB_TOKEN | base64)
-          curl -H "Authorization: Bearer $GHCR_TOKEN" https://ghcr.io/v2/${{ github.repository }}/${{ env.LAST_LEVEL }}/tags/list
+          docker image inspect --format '{{json .}}' ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
           # docker pull ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
           # version=$(docker inspect ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest | jq -r '.[0].Config.Labels["org.opencontainers.image.version"]')
           # echo "LATEST_VERSION=$version" >> "$GITHUB_ENV" 
