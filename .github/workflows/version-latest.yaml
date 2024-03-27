@@ -140,7 +140,7 @@ jobs:
           docker pull ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
           # docker image inspect --format '{{json .Tag}}' ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
           docker image inspect ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest | jq -r '.[].RepoDigests[]' | awk -F@ '{print $2}'
-          direction="$?"
+          direction="$2"
           echo $direction
       # - name: ➕ Increase Version
       #   uses: actions-ecosystem/action-bump-semver@v1
