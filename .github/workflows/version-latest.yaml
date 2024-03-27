@@ -139,8 +139,9 @@ jobs:
         run: |
           docker pull ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
           # docker image inspect --format '{{json .Tag}}' ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
-          echo "DIG=${{docker image inspect ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest | jq -r '.[].RepoDigests[]' | awk -F@ '{print $2}'}}" >> "$GITHUB_ENV"
-      
+          docker image inspect ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest | jq -r '.[].RepoDigests[]' | awk -F@ '{print $2}'}}
+          dir = "hello"
+          echo $dir
       # - name: ➕ Increase Version
       #   uses: actions-ecosystem/action-bump-semver@v1
       #   id: bump-semver
