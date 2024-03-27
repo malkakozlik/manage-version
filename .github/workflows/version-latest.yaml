@@ -153,16 +153,9 @@ jobs:
           level: ${{ inputs.semverLevel }}
         if: ${{ env.LATEST_VERSION != 'null' }}
 
- 
-
- 
-
       - name: 🔖 New Package Version
         run: echo "TAG=${{ steps.bump-semver.outputs.new_version }}" >> "$GITHUB_ENV"
-        if: steps.latest_version.outputs.value != 'null'
-
-      - name: echo 
-        run: echo "${{ steps.bump-semver.outputs.new_version }}"
+        if: ${{ env.LATEST_VERSION != 'null' }}
       
       # - name: 🐳 Docker metadata
       #   id: docker_meta
