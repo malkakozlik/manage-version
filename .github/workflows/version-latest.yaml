@@ -156,7 +156,7 @@ jobs:
         with:
           current_version: ${{ env.LATEST_VERSION }}
           level: ${{ inputs.semverLevel }}
-        if: ${{ env.LATEST_VERSION }} != 'null'
+        if: ${{ env.LATEST_VERSION }} != ''
 
       - name: name
         run: echo "${{ steps.bump-semver.outputs.new_version }}"
