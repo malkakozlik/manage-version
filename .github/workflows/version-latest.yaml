@@ -142,7 +142,7 @@ jobs:
           result=$(docker image inspect ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest | jq -r '.[].RepoDigests[]' | awk -F@ '{print $2}')
           echo "$result"
           echo "hello"
-          result2=$(curl -s 'https://ghcr.io/v2/repositories/${{ github.repository }}/${{ env.LAST_LEVEL }}/tags' -H 'Content-Type: application/json' )
+          result2=$(curl -s 'https://ghcr.io/repositories/${{ github.repository }}/${{ env.LAST_LEVEL }}/tags' -H 'Content-Type: application/json' )
           echo "$result2"
           
       # - name: ➕ Increase Version
