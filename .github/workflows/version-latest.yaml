@@ -135,26 +135,23 @@ jobs:
       #     tags: |
       #       type=raw,value=latest,enable={{is_default_branch}}
       #       type=semver,pattern={{major}}.{{minor}}.{{patch}}
-      - name: run
+      - name: 🏷️ Get latest version
+        id: latest_version
         run: |
           docker pull ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
-          # docker image inspect --format '{{json .Tag}}' ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
-          # result=$(docker image inspect ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest | jq -r '.[].RepoDigests[]' | awk -F@ '{print $2}')
-          # echo "$result"
-          # echo "hello"
-          # result2=$(curl -s 'https://ghcr.io/repositories/${{ github.repository }}/${{ env.LAST_LEVEL }}/tags' -H 'Content-Type: application/json' )
-          # echo "$result2"
-          # docker images
           version=$(docker inspect ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest | jq -r '.[0].Config.Labels["org.opencontainers.image.version"]')
-          echo $version
+          echo "LATEST_VERSION=$version" >> "$GITHUB_ENV" 
           
-      # - name: ➕ Increase Version
-      #   uses: actions-ecosystem/action-bump-semver@v1
-      #   id: bump-semver
-      #   with:
-      #     current_version: ${{ steps.latest_version.outputs.value }}
-      #     level: ${{ inputs.semverLevel }}
-      #   if: steps.latest_version.outputs.value != 'null'
+      - name: ➕ Increase Version
+        uses: actions-ecosystem/action-bump-semver@v1
+        id: bump-semver
+        with:
+          current_version: ${{ env.LATEST_VERSION }}
+          level: ${{ inputs.semverLevel }}
+        if: ${{ env.LATEST_VERSION }} != 'null'
+
+      - name: name
+        run: echo "${{ steps.bump-semver.outputs.new_version }}"
 
       # - name: ➕ Increase Version
       #   uses: actions-ecosystem/action-bump-semver@v1
