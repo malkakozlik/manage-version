@@ -116,25 +116,6 @@ jobs:
       - name: 🔖 Set Default Tag
         run: echo "TAG=v0.0.1" >> "$GITHUB_ENV" 
 
-      # - name: 🏷️ Get latest version
-      #   id: latest_version
-      #   uses: flownative/action-docker-get-label@v1
-      #   with:
-      #     image: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
-      #     label: org.opencontainers.image.version
-      #     registry_username: ${{ github.actor }}
-      #     registry_password: ${{ secrets.GITHUB_TOKEN }}
-      #     registry_endpoint: https://ghcr.io
-
-      # - name: 🐳 Docker metadata
-      #   id: docker_metadata
-      #   uses: docker/metadata-action@v5
-      #   with:
-      #     images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
-      #     labels: org.opencontainers.image.version=latest
-      #     tags: |
-      #       type=raw,value=latest,enable={{is_default_branch}}
-      #       type=semver,pattern={{major}}.{{minor}}.{{patch}}
       - name: 🏷️ Get latest version
         id: latest_version
         run: |
@@ -157,31 +138,31 @@ jobs:
         run: echo "TAG=${{ steps.bump-semver.outputs.new_version }}" >> "$GITHUB_ENV"
         if: ${{ env.LATEST_VERSION != 'null' }}
       
-      # - name: 🐳 Docker metadata
-      #   id: docker_meta
-      #   uses: docker/metadata-action@v5
-      #   with:
-      #     images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
-      #     tags: |
-      #       type=raw,value=latest,enable={{is_default_branch}}
-      #       type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ env.TAG }}
-      #       type=semver,pattern={{major}}.{{minor}},value=${{ env.TAG }}
-      #       type=semver,pattern={{major}},value=${{ env.TAG }}
+      - name: 🐳 Docker metadata
+        id: docker_meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=semver,pattern={{major}}.{{minor}}.{{patch}},value=${{ env.TAG }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ env.TAG }}
+            type=semver,pattern={{major}},value=${{ env.TAG }}
               
 
-      # - name: 🏗️ Build and push container image to registry
-      #   id: build-and-push
-      #   uses: docker/build-push-action@v5
-      #   with:
-      #     context: ./${{ matrix.directory }}
-      #     push: true
-      #     tags: ${{ steps.docker_meta.outputs.tags }}
-      #     labels: ${{ steps.docker_meta.outputs.labels }}
-      #     file: ./${{ matrix.directory }}/Dockerfile
+      - name: 🏗️ Build and push container image to registry
+        id: build-and-push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./${{ matrix.directory }}
+          push: true
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+          file: ./${{ matrix.directory }}/Dockerfile
 
-      # - name: 🚀 Deploy to Azure Functions
-      #   id: deploy-to-functions
-      #   uses: Azure/functions-container-action@v1
-      #   with:
-      #     app-name: ${{ env.LAST_LEVEL }}
-      #     image: "ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:${{ env.TAG }}"
+      - name: 🚀 Deploy to Azure Functions
+        id: deploy-to-functions
+        uses: Azure/functions-container-action@v1
+        with:
+          app-name: ${{ env.LAST_LEVEL }}
+          image: "ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:${{ env.TAG }}"
