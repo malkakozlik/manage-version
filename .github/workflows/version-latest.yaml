@@ -137,19 +137,16 @@ jobs:
       # - name: 🔖 New Package Version
       #   run: echo "TAG=${{ steps.bump-semver.outputs.new_version }}" >> "$GITHUB_ENV"
       #   if: ${{ env.LATEST_VERSION != 'null' }}
-      - name: ls file
-        run: ls ./${{ matrix.directory }}
-
 
       - name: Get version from .toml file
         uses: SebRollen/toml-action@v1.0.2
-        id: read_toml
+        id: read_version
         with:
-          file: './${{ matrix.directory }}/pyproject.toml'
+          file: './${{ matrix.directory }}project.toml'
           field: 'project.version'
 
       - name: Set TAG to environment variables
-        run: echo "TAG=${{ steps.read_toml.outputs.value }}" >> "$GITHUB_ENV"
+        run: echo "TAG=${{ steps.read_version.outputs.value }}" >> "$GITHUB_ENV"
       
       - name: 🐳 Docker metadata
         id: docker_meta
