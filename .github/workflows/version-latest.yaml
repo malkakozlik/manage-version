@@ -137,6 +137,9 @@ jobs:
       # - name: 🔖 New Package Version
       #   run: echo "TAG=${{ steps.bump-semver.outputs.new_version }}" >> "$GITHUB_ENV"
       #   if: ${{ env.LATEST_VERSION != 'null' }}
+      - name: ls file
+        run: ls ./${{ matrix.directory }}
+
 
       - name: Get version from .toml file
         uses: SebRollen/toml-action@v1.0.2
