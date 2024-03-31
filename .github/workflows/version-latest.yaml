@@ -12,13 +12,6 @@ on:
         options:
           - only_changed_directories
           - all
-      semverLevel:
-        type: choice
-        default: patch
-        options:
-          - major
-          - minor
-          - patch
 
 env:
   WORKING_DIR: services
