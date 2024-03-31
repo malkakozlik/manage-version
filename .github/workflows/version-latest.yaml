@@ -142,7 +142,7 @@ jobs:
         uses: SebRollen/toml-action@v1.0.2
         id: read_version
         with:
-          file: './${{ matrix.directory }}/pyproject.toml'
+          file: './${{ matrix.directory }}/project.toml'
           field: 'project.version'
 
       - name: Set TAG to environment variables
