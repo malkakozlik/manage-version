@@ -114,29 +114,39 @@ jobs:
           LAST_LEVEL=$(echo ${{ matrix.directory }} | xargs -n 1 basename)
           echo "LAST_LEVEL=$LAST_LEVEL" >> "$GITHUB_ENV"
 
-      - name: 🔖 Set Default Tag
-        run: echo "TAG=v0.0.1" >> "$GITHUB_ENV" 
+      # - name: 🔖 Set Default Tag
+      #   run: echo "TAG=v0.0.1" >> "$GITHUB_ENV" 
 
-      - name: 🏷️ Get latest version
-        id: latest_version
-        run: |
-          {
-            docker pull ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
-            version=$(docker inspect ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest | jq -r '.[0].Config.Labels["org.opencontainers.image.version"]')
-            echo "LATEST_VERSION=$version" >> "$GITHUB_ENV" 
-          } || {}
+      # - name: 🏷️ Get latest version
+      #   id: latest_version
+      #   run: |
+      #     {
+      #       docker pull ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest
+      #       version=$(docker inspect ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:latest | jq -r '.[0].Config.Labels["org.opencontainers.image.version"]')
+      #       echo "LATEST_VERSION=$version" >> "$GITHUB_ENV" 
+      #     } || {}
 
-      - name: ➕ Increase Version
-        uses: actions-ecosystem/action-bump-semver@v1
-        id: bump-semver
+      # - name: ➕ Increase Version
+      #   uses: actions-ecosystem/action-bump-semver@v1
+      #   id: bump-semver
+      #   with:
+      #     current_version: ${{ env.LATEST_VERSION }}
+      #     level: ${{ inputs.semverLevel }}
+      #   if: ${{ env.LATEST_VERSION != 'null' }}
+
+      # - name: 🔖 New Package Version
+      #   run: echo "TAG=${{ steps.bump-semver.outputs.new_version }}" >> "$GITHUB_ENV"
+      #   if: ${{ env.LATEST_VERSION != 'null' }}
+
+      - name: Get version from .toml file
+        uses: SebRollen/toml-action@v1.0.2
+        id: read_toml
         with:
-          current_version: ${{ env.LATEST_VERSION }}
-          level: ${{ inputs.semverLevel }}
-        if: ${{ env.LATEST_VERSION != 'null' }}
+          file: 'pyproject.toml'
+          field: 'project.version'
 
-      - name: 🔖 New Package Version
-        run: echo "TAG=${{ steps.bump-semver.outputs.new_version }}" >> "$GITHUB_ENV"
-        if: ${{ env.LATEST_VERSION != 'null' }}
+      - name: Set TAG to environment variables
+        run: echo "TAG=${{ steps.read_toml.outputs.value }}" >> "$GITHUB_ENV"
       
       - name: 🐳 Docker metadata
         id: docker_meta
