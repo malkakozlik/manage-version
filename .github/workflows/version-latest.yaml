@@ -126,7 +126,7 @@ jobs:
 
       - name: get tag from pyproject.toml
         run: |
-          python -c "import services.try1.func_user_disable; print(services.try1.func_user_disable.__version__)"
+          python -c "import services.try1.func_user_disable.project; print(services.try1.func_user_disable.project.__version__)"
           
       
       # - name: 🐳 Docker metadata
