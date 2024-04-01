@@ -123,31 +123,29 @@ jobs:
       #     version=$(python -c "import services.try1.func_user_disable; print(services.try1.func_user_disable.__version__)")
       #     echo "TAG=$version" >> "$GITHUB_ENV"  
       #     echo "$version"
-      - uses: actions/setup-python@v5
-        with:
-          python-version-file: pyproject.toml 
 
-      # - name: get tag from pyproject.toml
-      #   run: |
-      #     version=$()
+      - name: get tag from pyproject.toml
+        run: |
+          python -c "import services.try1.func_user_disable; print(services.try1.func_user_disable.__version__)"
+          
       
-      - name: 🐳 Docker metadata
-        id: docker_meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
-          tags: |
-            type=semver,pattern={{version}}
+      # - name: 🐳 Docker metadata
+      #   id: docker_meta
+      #   uses: docker/metadata-action@v5
+      #   with:
+      #     images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
+      #     tags: |
+      #       type=semver,pattern={{version}}
 
-      - name: 🏗️ Build and push container image to registry
-        id: build-and-push
-        uses: docker/build-push-action@v5
-        with:
-          context: ./${{ matrix.directory }}
-          push: true
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
-          file: ./${{ matrix.directory }}/Dockerfile
+      # - name: 🏗️ Build and push container image to registry
+      #   id: build-and-push
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     context: ./${{ matrix.directory }}
+      #     push: true
+      #     tags: ${{ steps.docker_meta.outputs.tags }}
+      #     labels: ${{ steps.docker_meta.outputs.labels }}
+      #     file: ./${{ matrix.directory }}/Dockerfile
 
       # - name: 🚀 Deploy to Azure Functions
       #   id: deploy-to-functions
