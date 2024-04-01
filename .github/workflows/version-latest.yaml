@@ -120,7 +120,7 @@ jobs:
 
       - name: echo tag
         run: |
-          version = $(python -c "import services.try1.func_user_disable; print(services.try1.func_user_disable.__version__)")
+          version=$(python -c "import services.try1.func_user_disable; print(services.try1.func_user_disable.__version__)")
           echo "TAG=$version" >> "$GITHUB_ENV"  
           echo "$version"
       
