@@ -119,7 +119,7 @@ jobs:
 
 
       - name: echo tag
-        run: python -c "import services.try1.func_user_disable; print(services.try1.func_user_disable.__version__)"
+        run: python -c "import services.try1; print(services.try1.func_user_disable.__version__)"
       
       - name: 🐳 Docker metadata
         id: docker_meta
