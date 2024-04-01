@@ -119,7 +119,7 @@ jobs:
 
 
       - name: echo tag
-        run: python -c "import project; print(cloud_core.__version__)"
+        run: python -c "import services.try1.func-user-disable.project; print(project.__version__)"
       
       # - name: 🐳 Docker metadata
       #   id: docker_meta
