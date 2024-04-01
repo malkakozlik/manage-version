@@ -188,7 +188,7 @@
   #         image: "ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:${{ env.TAG }}"
 
 
-name: 🚀 Build and deploy to Azure-Function-App
+name: Azure-Function-App
 
 on:
   workflow_dispatch:
