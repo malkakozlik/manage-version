@@ -119,7 +119,7 @@ jobs:
 
 
       - name: echo tag
-        run: python -c "import services.try1; print(services.try1.func_user_disable.__version__)"
+        run: python -c "import ${{ matrix.directory }}; print(${{ matrix.directory }}.__version__)"
       
       - name: 🐳 Docker metadata
         id: docker_meta
@@ -138,7 +138,7 @@ jobs:
         with:
           context: ./${{ matrix.directory }}
           push: true
-          tags: ${{ steps.docker_meta.outputs.tags }}
+          # tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
           file: ./${{ matrix.directory }}/Dockerfile
 
