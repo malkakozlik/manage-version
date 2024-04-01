@@ -1,7 +1,5 @@
 [project]
-version = "0.0.1"
+dynamic = ["version"]
 
-dependencies = [
-  "requests",
-  "pytest",
-]
+[tool.setuptools.dynamic]
+version = { attr = "project.__version__" }
