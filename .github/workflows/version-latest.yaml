@@ -124,32 +124,37 @@ jobs:
       #     echo "TAG=$version" >> "$GITHUB_ENV"  
       #     echo "$version"
 
-      - name: get tag from pyproject.toml
-        run: |
-          python -c "import services.try1.func_user_disable.project; print(services.try1.func_user_disable.project.__version__)"
+      # - name: get tag from pyproject.toml
+      #   run: |
+      #     python -c "import services.try1.func_user_disable.project; print(services.try1.func_user_disable.project.__version__)"
+
+# poetry install -q
+# IMAGE_NAME=$(poetry version | cut -d" " -f1)
+# IMAGE_VERSION=$(poetry version -s)
+# docker build -f dockerfile -t $IMAGE_NAME:$IMAGE_VERSION
           
       
-      # - name: 🐳 Docker metadata
-      #   id: docker_meta
-      #   uses: docker/metadata-action@v5
-      #   with:
-      #     images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
-      #     tags: |
-      #       type=semver,pattern={{version}}
+      - name: 🐳 Docker metadata
+        id: docker_meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
 
-      # - name: 🏗️ Build and push container image to registry
-      #   id: build-and-push
-      #   uses: docker/build-push-action@v5
-      #   with:
-      #     context: ./${{ matrix.directory }}
-      #     push: true
-      #     tags: ${{ steps.docker_meta.outputs.tags }}
-      #     labels: ${{ steps.docker_meta.outputs.labels }}
-      #     file: ./${{ matrix.directory }}/Dockerfile
+      - name: 🏗️ Build and push container image to registry
+        id: build-and-push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./${{ matrix.directory }}
+          push: true
+          tags: ${{ steps.docker_meta.outputs.tags }}
+          labels: ${{ steps.docker_meta.outputs.labels }}
+          file: ./${{ matrix.directory }}/Dockerfile
 
-      # - name: 🚀 Deploy to Azure Functions
-      #   id: deploy-to-functions
-      #   uses: Azure/functions-container-action@v1
-      #   with:
-      #     app-name: ${{ env.LAST_LEVEL }}
-      #     image: "ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:${{ env.TAG }}"
+      - name: 🚀 Deploy to Azure Functions
+        id: deploy-to-functions
+        uses: Azure/functions-container-action@v1
+        with:
+          app-name: ${{ env.LAST_LEVEL }}
+          image: "ghcr.io/${{ github.repository }}/${{ env.LAST_LEVEL }}:${{ env.TAG }}"
