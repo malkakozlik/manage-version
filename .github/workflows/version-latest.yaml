@@ -111,7 +111,7 @@ jobs:
       #   run: echo "TAG=${{ steps.read_version.outputs.value }}" >> "$GITHUB_ENV"
 
       - name: Convert / to .
-        run: echo "${{ matrix.directory }}" | sed 's/\//_/g'
+        run: echo "${{ matrix.directory }}" | sed 's/\//./g'
 
       # - name: echo tag
       #   run: |
