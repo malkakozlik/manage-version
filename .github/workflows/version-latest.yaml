@@ -122,7 +122,7 @@ jobs:
 
       - name: echo tag
         run: |
-          python -c "import ${{ env.CUSTOM_MATRIX_DIRECTORY }}.project; 
+          python -c "import ${{ env.CUSTOM_MATRIX_DIRECTORY }}.project
           version=$(print(${{ env.CUSTOM_MATRIX_DIRECTORY }}.project.__version__)")
           function_name=$(print(${{ env.CUSTOM_MATRIX_DIRECTORY }}.project.function_app_name)")
           echo "TAG=$version" >> "$GITHUB_ENV"  
