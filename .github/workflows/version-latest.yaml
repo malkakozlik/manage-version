@@ -94,11 +94,6 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: echo matrix directory
-        run: |
-          echo "/${{ env.WORKING_DIR }}"
-          echo "${{ matrix.directory }}"
-
       - name: 🧰 Check and copy necessary files
         run: |
           REQUIRED_FILES=(".funcignore" "host.json" "Dockerfile" ".dockerignore" )
@@ -111,6 +106,9 @@ jobs:
         run: |
           LAST_LEVEL=$(echo ${{ matrix.directory }} | xargs -n 1 basename)
           echo "LAST_LEVEL=$LAST_LEVEL" >> "$GITHUB_ENV"
+
+      - name: echo last level
+        run: echo "${{ env.LAST_LEVEL }}"
 
       # - name: 🏷️ Get version from .toml file
       #   uses: SebRollen/toml-action@v1.0.2
