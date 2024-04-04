@@ -34,7 +34,7 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event.inputs.branchName }}
 
-      - name: list sub-directories
+      - name: 📝 list sub-directories
         id: sub-directories
         run: echo "DIRS=$(ls -d services/*/* | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> $GITHUB_ENV
         if: inputs.deploy  == 'all'
@@ -48,7 +48,7 @@ jobs:
           workflow: "${{ github.workflow }}"
         if: inputs.deploy == 'only_changed_directories'
 
-      - name: Get changed directories
+      - name: 📝 Get changed directories
         id: changed-directories
         uses: tj-actions/changed-files@v42
         with:
@@ -106,29 +106,18 @@ jobs:
         run: |
           LAST_LEVEL=$(echo ${{ matrix.directory }} | xargs -n 1 basename)
           echo "LAST_LEVEL=$LAST_LEVEL" >> "$GITHUB_ENV"
-          
-      # - name: 🔖 New Package Version
-      #   run: echo "TAG=${{ steps.read_version.outputs.value }}" >> "$GITHUB_ENV"
 
-      - name: Convert / to .
+      - name: 🚚 Change Path Matrix Directory
         run: |
           CUSTOM_MATRIX_DIRECTORY=$(echo "${{ matrix.directory }}" | sed 's/\//./g')
           echo "CUSTOM_MATRIX_DIRECTORY=$CUSTOM_MATRIX_DIRECTORY" >> "$GITHUB_ENV"
 
-      - name: echo
-        run: |
-          echo "${{ env.CUSTOM_MATRIX_DIRECTORY }}"
-          echo "${{ matrix.directory }}"
-
-      - name: echo tag
+      - name: 👷 Import Function App Name And Version
         run: |
           version=$(python -c "import ${{ env.CUSTOM_MATRIX_DIRECTORY }}.project; print(${{ env.CUSTOM_MATRIX_DIRECTORY }}.project.__version__)")
           function_name=$(python -c "import ${{ env.CUSTOM_MATRIX_DIRECTORY }}.project; print(${{ env.CUSTOM_MATRIX_DIRECTORY }}.project.function_app_name)")
           echo "TAG=$version" >> "$GITHUB_ENV"  
           echo "FUNCTION_NAME=$function_name" >> "$GITHUB_ENV"  
-          # ----------------------------------------------to delete
-          echo "$version"
-          echo "$function_name"
       
       - name: 🐳 Docker metadata
         id: docker_meta
