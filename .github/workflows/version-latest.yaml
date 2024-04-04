@@ -122,7 +122,8 @@ jobs:
 
       - name: echo tag
         run: |
-          version=$(python -c "import ${{ env.CUSTOM_MATRIX_DIRECTORY }}.project; print(${{ env.CUSTOM_MATRIX_DIRECTORY }}.project.__version__)")
+          python -c "import ${{ env.CUSTOM_MATRIX_DIRECTORY }}.project; 
+          version=$(print(${{ env.CUSTOM_MATRIX_DIRECTORY }}.project.__version__)")
           echo "TAG=$version" >> "$GITHUB_ENV"  
           # ----------------------------------------------to delete
           echo "$version"
@@ -147,6 +148,8 @@ jobs:
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
           file: ./${{ matrix.directory }}/Dockerfile
+
+      
 
       # - name: 🚀 Deploy to Azure Functions
       #   id: deploy-to-functions
