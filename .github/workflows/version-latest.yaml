@@ -110,11 +110,14 @@ jobs:
       # - name: 🔖 New Package Version
       #   run: echo "TAG=${{ steps.read_version.outputs.value }}" >> "$GITHUB_ENV"
 
-      - name: echo tag
-        run: |
-          version=$(python -c "import services.try1.func_user_disable.project; print(services.try1.func_user_disable.project.__version__)")
-          echo "TAG=$version" >> "$GITHUB_ENV"  
-          echo "$version"
+      - name: Convert / to .
+        run: echo "${{ matrix.directory }}" | sed -r 's////_/g'
+
+      # - name: echo tag
+      #   run: |
+      #     version=$(python -c "import services.try1.func_user_disable.project; print(services.try1.func_user_disable.project.__version__)")
+      #     echo "TAG=$version" >> "$GITHUB_ENV"  
+      #     echo "$version"
 
       # - name: get tag from pyproject.toml
       #   run: |
