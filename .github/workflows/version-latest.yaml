@@ -37,7 +37,7 @@ jobs:
       - name: list sub-directories
         id: sub-directories
         # run: echo "DIRS=$(ls -d services/*/*/ | jq --raw-input --slurp --compact-output 'split("\n")[:-1]')" >> $GITHUB_ENV
-        run: echo "DIRS=$(ls -d services/*/*/ | jq --raw-input )" >> $GITHUB_ENV
+        run: echo "DIRS=$(ls -d services/*/*/  )" >> $GITHUB_ENV
         if: inputs.deploy  == 'all'
 
       - name: 🔍 get previous deployment success commit
