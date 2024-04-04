@@ -106,29 +106,15 @@ jobs:
         run: |
           LAST_LEVEL=$(echo ${{ matrix.directory }} | xargs -n 1 basename)
           echo "LAST_LEVEL=$LAST_LEVEL" >> "$GITHUB_ENV"
-
-      - name: echo last level
-        run: |
-          echo "${{ env.LAST_LEVEL }}"
-          echo "${{ env.WORKING_DIR }}"
-          echo "${{ matrix.directory }}"
-
-      # - name: 🏷️ Get version from .toml file
-      #   uses: SebRollen/toml-action@v1.0.2
-      #   id: read_version
-      #   with:
-      #     file: './${{ matrix.directory }}project.toml'
-      #     field: 'project.version'
-
+          
       # - name: 🔖 New Package Version
       #   run: echo "TAG=${{ steps.read_version.outputs.value }}" >> "$GITHUB_ENV"
 
-
-      # - name: echo tag
-      #   run: |
-      #     version=$(python -c "import services.try1.func_user_disable; print(services.try1.func_user_disable.__version__)")
-      #     echo "TAG=$version" >> "$GITHUB_ENV"  
-      #     echo "$version"
+      - name: echo tag
+        run: |
+          version=$(python -c "import services.try1.func_user_disable; print(services.try1.func_user_disable.__version__)")
+          echo "TAG=$version" >> "$GITHUB_ENV"  
+          echo "$version"
 
       # - name: get tag from pyproject.toml
       #   run: |
