@@ -65,10 +65,6 @@ jobs:
         run: echo "DIRS=${{ toJson(steps.changed-directories.outputs.all_changed_files) }}" >> $GITHUB_ENV
         if: inputs.deploy == 'only_changed_directories'
 
-      
-      - name: echo dirs
-        run: echo "$DIRS"
-
       - name: 🛠️ Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -97,6 +93,11 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: echo matrix directory
+        run: |
+          echo "/${{ env.WORKING_DIR }}"
+          echo "${{ matrix.directory }}"
 
       - name: 🧰 Check and copy necessary files
         run: |
