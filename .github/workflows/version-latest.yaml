@@ -108,7 +108,10 @@ jobs:
           echo "LAST_LEVEL=$LAST_LEVEL" >> "$GITHUB_ENV"
 
       - name: echo last level
-        run: echo "${{ env.LAST_LEVEL }}"
+        run: |
+          echo "${{ env.LAST_LEVEL }}"
+          echo "${{ env.WORKING_DIR }}"
+          echo "${{ matrix.directory }}"
 
       # - name: 🏷️ Get version from .toml file
       #   uses: SebRollen/toml-action@v1.0.2
