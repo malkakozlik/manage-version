@@ -112,7 +112,7 @@ jobs:
 
       - name: Convert / to .
         run: |
-          CUSTOM_MATRIX_DIRECTORY = $(echo "${{ matrix.directory }}" | sed 's/\//./g')
+          CUSTOM_MATRIX_DIRECTORY=$(echo "${{ matrix.directory }}" | sed 's/\//./g')
           echo "CUSTOM_MATRIX_DIRECTORY=$CUSTOM_MATRIX_DIRECTORY" >> "$GITHUB_ENV"
 
       - name: echo
@@ -120,11 +120,12 @@ jobs:
           echo "${{ env.CUSTOM_MATRIX_DIRECTORY }}"
           echo "${{ matrix.directory }}"
 
-      # - name: echo tag
-      #   run: |
-      #     version=$(python -c "import services.try1.func_user_disable.project; print(services.try1.func_user_disable.project.__version__)")
-      #     echo "TAG=$version" >> "$GITHUB_ENV"  
-      #     echo "$version"
+      - name: echo tag
+        run: |
+          version=$(python -c "import ${{ env.CUSTOM_MATRIX_DIRECTORY }}.project; print(${{ env.CUSTOM_MATRIX_DIRECTORY }}.project.__version__)")
+          echo "TAG=$version" >> "$GITHUB_ENV"  
+          # ----------------------------------------------to delete
+          echo "$version"
 
       # - name: get tag from pyproject.toml
       #   run: |
